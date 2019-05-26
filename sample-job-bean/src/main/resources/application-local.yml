@@ -1,0 +1,37 @@
+server:
+  port: 9086
+  
+meta:
+  admin-url: http://127.0.0.1:9090/
+  callback-url: http://127.0.0.1:9086/
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/jside
+    username: ENC(yxN/mqqITFXs1Hk8nf1a8g==)
+    password: ENC(aDlF1/UeXM7pdKxjER25pczJ0Qd2Dywy)
+
+job:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:D:/data/batch-jobs-local.db
+    username: ENC(HN3Y5j1JRF4y3DRXoPIJrA==)
+    password: ENC(ajOdzzD7FDVoZ6SZegisXw==)
+
+job01:
+  name: LOCAL-Bean-Job-No.1
+  desc: "@LOCAL: Bean Style Job with 2 steps"
+  mode: trigger
+  cron: "0 0/6 * * * ?"
+  file:
+    step1-input: "D:/data/step1-input-light.csv"
+    step1-output: "D:/data/step1-output.xml"
+    step2-schema: "D:/data/step2-schema.sql"
+
+job02:
+  name: LOCAL-Bean-Job-No.2
+  desc: "@LOCAL: Bean Style Job with 1 steps"
+  mode: trigger
+  cron: "0 0/9 * * * ?"
+  file:
+    step1-output: "D:/data/job2-output.json"
+    
