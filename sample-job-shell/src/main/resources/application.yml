@@ -1,0 +1,10 @@
+spring:
+  batch:
+    job:
+      enabled: false
+  profiles:    active: dev
+
+jasypt:
+  encryptor:
+    bean: jasyptEncryptor
+    secret: mykey

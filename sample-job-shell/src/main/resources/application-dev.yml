@@ -1,0 +1,27 @@
+server:
+  port: 9092
+  
+meta:
+  admin-url: http://127.0.0.1:9090/
+  callback-url: http://127.0.0.1:9092/
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/jside
+    username: ENC(yxN/mqqITFXs1Hk8nf1a8g==)
+    password: ENC(aDlF1/UeXM7pdKxjER25pczJ0Qd2Dywy)
+
+job01:
+  name: DEV-SHELL-JOB-01
+  desc: "The First Shell Job@DEV"
+  mode: trigger
+  cron: "0 0/10 * * * ?"
+  file:
+    script: "D:/data/one-shell.bat"
+
+job02:
+  name: DEV-SHELL-JOB-02
+  desc: "2nd shell job at DEV"
+  mode: self
+  cron: "0 0/5 * * * ?"
+  file:
+    script: "D:/data/two-shell.bat"

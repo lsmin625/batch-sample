@@ -1,0 +1,27 @@
+server:
+  port: 9093
+  
+meta:
+  admin-url: http://127.0.0.1:9090/
+  callback-url: http://127.0.0.1:9093/
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/jside
+    username: ENC(yxN/mqqITFXs1Hk8nf1a8g==)
+    password: ENC(aDlF1/UeXM7pdKxjER25pczJ0Qd2Dywy)
+
+job01:
+  name: STG-SHELL-JOB01
+  desc: "STG Profile - 1st Job"
+  mode: trigger
+  cron: "0 0/15 * * * ?"
+  file:
+    script: "D:/data/one-shell.bat"
+
+job02:
+  name: STG-SHELL-JOB02
+  desc: "STG Profile - 2nd job"
+  mode: self
+  cron: "0 0/8 * * * ?"
+  file:
+    script: "D:/data/two-shell.bat"

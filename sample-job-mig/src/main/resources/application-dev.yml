@@ -1,0 +1,29 @@
+meta:
+  admin-url: http://127.0.0.1:9090/
+  callback-url: http://127.0.0.1:9094/
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/jside
+    username: ENC(yxN/mqqITFXs1Hk8nf1a8g==)
+    password: ENC(aDlF1/UeXM7pdKxjER25pczJ0Qd2Dywy)
+
+job:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://172.20.1.105/db_content_processing
+    username: inisoft
+    password: skehahffk
+
+job01:
+  name: ECDN-NCMS-JOB
+  desc: "ECDN Migration contents to NCMS"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  file:
+    output-common: "D:/data/ecdn-ncms/ecdn-common.csv"
+    output-video: "D:/data/ecdn-ncms/ecdn-video.csv"
+    output-audio: "D:/data/ecdn-ncms/ecdn-audio.csv"
+    output-caption: "D:/data/ecdn-ncms/ecdn-caption.csv"
+
+data:
+  limit: 0

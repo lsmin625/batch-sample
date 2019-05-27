@@ -1,0 +1,13 @@
+spring:
+  batch:
+    job:
+      enabled: false
+  profiles:    active: dev
+
+server:
+  port: 9094
+  
+jasypt:
+  encryptor:
+    bean: jasyptEncryptor
+    secret: mykey
