@@ -1,4 +1,4 @@
-package com.skb.ecdnmigration.job;
+package com.skb.ecdnmigration.job1;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.skb.ecdnmigration.job;
+package com.skb.ecdnmigration.job1;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;

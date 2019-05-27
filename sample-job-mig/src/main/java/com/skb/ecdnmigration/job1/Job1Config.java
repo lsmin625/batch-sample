@@ -1,4 +1,4 @@
-package com.skb.ecdnmigration.job;
+package com.skb.ecdnmigration.job1;
 
 import javax.sql.DataSource;
 
@@ -34,7 +34,7 @@ import com.skb.ecdnmigration.job.data.FileList;
 
 @Configuration 
 @Import(AdminConfig.class)
-public class JobConfig {
+public class Job1Config {
 	@Autowired private Environment env;
 	@Autowired private StepBuilderFactory stepBuilderFactory;
 	@Autowired private JobBuilderFactory jobBuilderFactory;
@@ -98,7 +98,7 @@ public class JobConfig {
     }
 
  	@Bean @Qualifier("ecdnNcmsJob")
-    public Job job02(@Qualifier("jobDataSource") DataSource jobDataSource) {
+    public Job job01(@Qualifier("jobDataSource") DataSource jobDataSource) {
 
  		JobBuilder jobBuilder = jobBuilderFactory.get(jobName);
         jobBuilder.incrementer(new RunIdIncrementer());

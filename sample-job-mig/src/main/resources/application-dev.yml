@@ -25,5 +25,15 @@ job01:
     output-audio: "D:/data/ecdn-ncms/ecdn-audio.csv"
     output-caption: "D:/data/ecdn-ncms/ecdn-caption.csv"
 
+job02:
+  name: ECDN-CAPTION-SIZE
+  desc: "ECDN Migration to set caption size"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  file:
+    input-vttlist: "D:/data/ecdn-ncms/caption/vtt-list.csv"
+    input-caption: "D:/data/ecdn-ncms/caption/ecdn-caption.csv"
+    output-caption: "D:/data/ecdn-ncms/caption/ecdn-caption"
+
 data:
   limit: 0
