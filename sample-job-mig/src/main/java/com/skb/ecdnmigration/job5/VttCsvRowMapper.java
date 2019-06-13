@@ -15,6 +15,8 @@ public class VttCsvRowMapper implements RowMapper<VttCsv> {
 		
 		csv.setRegion(rs.getString("region"));
 		csv.setMediaId(rs.getString("media_id"));
+		csv.setCid(rs.getString("cid"));
+		csv.setContentName(rs.getString("content_name"));
 		csv.setM4aName(rs.getString("m4a_name"));
 		csv.setM4aSize(rs.getLong("m4a_size"));
 		csv.setM4vName(rs.getString("m4v_name"));

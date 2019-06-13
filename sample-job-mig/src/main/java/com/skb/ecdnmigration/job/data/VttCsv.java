@@ -6,6 +6,8 @@ import lombok.Data;
 public class VttCsv {
 	String region;
 	String mediaId;
+	String cid;
+	String contentName;
 	String m4aName;
 	long m4aSize;
 	String m4vName;
@@ -18,6 +20,8 @@ public class VttCsv {
 		StringBuffer buff = new StringBuffer();
 		buff.append(region + ",");
 		buff.append(mediaId + ",");
+		buff.append(cid + ",");
+		buff.append(contentName + ",");
 		buff.append(m4aName + ",");
 		buff.append(m4aSize + ",");
 		buff.append(m4vName + ",");

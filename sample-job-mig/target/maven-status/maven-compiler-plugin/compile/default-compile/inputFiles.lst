@@ -1,5 +1,7 @@
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\FileCommon.java
+D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job1\TableRowMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\FileToMemoryProcessor.java
+D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job4\VttContentPrepareStatementSetter.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\Job2Config.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job4\VttLineMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMetaMaster.java
@@ -10,7 +12,6 @@ D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\da
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job4\Job4Config.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job4\MultiFileItemReader.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job5\Job5Config.java
-D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\TableRowMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\VttCsv.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job1\DbToCvsProcessor.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job5\CsvFileItemWriter.java
@@ -19,7 +20,6 @@ D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\da
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMetaSubtitle.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job1\MultiFileItemWriter.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\TableContent.java
-D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job4\TableManager.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\CaptionFileWriter.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job5\VttCsvRowMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMetaAudio.java
@@ -32,8 +32,10 @@ D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\BatchJ
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMigrationData.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\CaptionFieldMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\FileAudio.java
+D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job4\VttContentRowMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\FileVideo.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\VttFieldMapper.java
+D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\VttContent.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job4\MemoryItemWriter.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job3\DbToCvsProcessor.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\FileCaption.java

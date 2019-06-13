@@ -25,7 +25,7 @@ import com.sk.batch.lib.JobFinishedListener;
 import com.sk.batch.lib.TriggerJobInfo;
 import com.sk.batch.lib.TriggerJobList;
 import com.skb.ecdnmigration.job.data.TableContent;
-import com.skb.ecdnmigration.job.data.TableRowMapper;
+import com.skb.ecdnmigration.job1.TableRowMapper;
 import com.skb.ecdnmigration.job.data.FileCheck;
 
 
@@ -36,6 +36,7 @@ public class Job3Config {
 	@Autowired private JobBuilderFactory jobBuilderFactory;
 	@Autowired private JobFinishedListener jobFinishedListener;
 	@Autowired private TriggerJobList triggerJobList;
+	@Autowired @Qualifier("migDataSource") private DataSource migDataSource;
 	
 
 	@Value("${meta.admin-url}") private String adminUrl;
@@ -50,7 +51,7 @@ public class Job3Config {
 	
 	@Value("${data.limit}") private int dataLimit = 0;
 	    
-    private ItemReader<TableContent> step1Reader(DataSource jobDataSource) {
+    private ItemReader<TableContent> step1Reader() {
     	StringBuffer sql = new StringBuffer();
        	sql.append("SELECT tb_content.content_seq, media_id, cid, package_info, meta_info, tb_content.register_date ");
     	sql.append("FROM tb_content, tb_content_meta ");
@@ -62,30 +63,30 @@ public class Job3Config {
     	}
     	
     	JdbcCursorItemReader<TableContent> reader = new JdbcCursorItemReader<TableContent>();
-        reader.setDataSource(jobDataSource);
+        reader.setDataSource(migDataSource);
         reader.setRowMapper(new TableRowMapper());
         reader.setSql(sql.toString());
         return reader;
     }
  
-    private Step step1(DataSource jobDataSource) {
+    private Step step1() {
     	StepBuilder stepBuilder =  stepBuilderFactory.get("migCheckStep1");
         SimpleStepBuilder<TableContent, FileCheck> simpleStepBuilder = stepBuilder.<TableContent, FileCheck> chunk(100);
-        simpleStepBuilder.reader(step1Reader(jobDataSource));
+        simpleStepBuilder.reader(step1Reader());
         simpleStepBuilder.processor(new DbToCvsProcessor<TableContent, FileCheck>());
         simpleStepBuilder.writer(new SingleFileItemWriter(fCheck));
         return simpleStepBuilder.build();
     }
 
  	@Bean @Qualifier("migCheckJob")
-    public Job job03(@Qualifier("jobDataSource") DataSource jobDataSource) {
+    public Job job03() {
 
  		JobBuilder jobBuilder = jobBuilderFactory.get(jobName);
         jobBuilder.incrementer(new RunIdIncrementer());
         jobBuilder.preventRestart();
         jobBuilder.listener(jobFinishedListener);
 
-        JobFlowBuilder jobFlowBuilder = jobBuilder.flow(step1(jobDataSource));
+        JobFlowBuilder jobFlowBuilder = jobBuilder.flow(step1());
         jobFlowBuilder.end();
         
         FlowJobBuilder flowJobBuilder = jobFlowBuilder.build();

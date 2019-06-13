@@ -1,0 +1,83 @@
+server:
+  port: 9094
+  
+meta:
+  admin-url: http://127.0.0.1:9090/
+  callback-url: http://127.0.0.1:9094/
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/jside
+    username: ENC(yxN/mqqITFXs1Hk8nf1a8g==)
+    password: ENC(aDlF1/UeXM7pdKxjER25pczJ0Qd2Dywy)
+
+mig:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://172.20.1.105/db_content_processing
+    username: inisoft
+    password: skehahffk
+
+job:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/batch_meta
+    username: ENC(yxN/mqqITFXs1Hk8nf1a8g==)
+    password: ENC(aDlF1/UeXM7pdKxjER25pczJ0Qd2Dywy)
+  create-tables: false
+
+job01:
+  name: ECDN_1-NCMS-JOB
+  desc: "ECDN Mig for NCMS"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  file:
+    output-common: "D:/data/ecdn-ncms/ecdn-common.csv"
+    output-video: "D:/data/ecdn-ncms/ecdn-video.csv"
+    output-audio: "D:/data/ecdn-ncms/ecdn-audio.csv"
+    output-caption: "D:/data/ecdn-ncms/ecdn-caption.csv"
+
+job02:
+  name: ECDN_2-CAPTION-SIZE
+  desc: "ECDN Mig to set caption size"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  file:
+    input-vttlist: "D:/data/ecdn-ncms/caption/vtt-list.csv"
+    input-caption: "D:/data/ecdn-ncms/caption/ecdn-caption.csv"
+    output-caption: "D:/data/ecdn-ncms/caption/ecdn-caption"
+
+job03:
+  name: ECDN_3-MIG-CHECK
+  desc: "ECDN Mig to check"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  file:
+    output-check: "D:/data/ecdn-ncms/ecdn-check"
+
+job04:
+  name: ECDN_4-UPLOAD-SIZE
+  desc: "To upload size to DB"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  file:
+    dir-dong: "D:/data/ecdn-ncms/size-comp/dong/"
+    dir-gang: "D:/data/ecdn-ncms/size-comp/gang/"
+
+job05:
+  name: ECDN_5-EXPORT-SIZE
+  desc: "To export media size to CSV"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  file:
+    dir-output: "D:/data/ecdn-ncms/size-comp/"
+
+job06:
+  name: ECDN_6-WRONG-PATH
+  desc: "To correct wrong path"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  file:
+    dir-output: "D:/data/ecdn-ncms/wrong-path/"
+
+data:
+  limit: 0

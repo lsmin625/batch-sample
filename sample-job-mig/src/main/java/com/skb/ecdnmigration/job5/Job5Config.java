@@ -42,18 +42,19 @@ import com.sk.batch.lib.TriggerJobList;
 import com.skb.ecdnmigration.job.data.FileCaption;
 import com.skb.ecdnmigration.job.data.FileList;
 import com.skb.ecdnmigration.job.data.TableContent;
-import com.skb.ecdnmigration.job.data.TableRowMapper;
 import com.skb.ecdnmigration.job.data.VttCsv;
 import com.skb.ecdnmigration.job.data.VttFile;
 import com.skb.ecdnmigration.job.data.VttSize;
 import com.skb.ecdnmigration.job1.DbToCvsProcessor;
+import com.skb.ecdnmigration.job1.Job1Config;
 import com.skb.ecdnmigration.job1.MultiFileItemWriter;
+import com.skb.ecdnmigration.job1.TableRowMapper;
 import com.skb.ecdnmigration.job2.FileToMemoryProcessor;
 import com.skb.ecdnmigration.job2.VttFieldMapper;
 
 
 @Configuration 
-@Import(AdminConfig.class)
+@Import({AdminConfig.class, Job1Config.class})
 public class Job5Config {
 	private Logger logger = LoggerFactory.getLogger(Job5Config.class);
 
@@ -61,7 +62,7 @@ public class Job5Config {
 	@Autowired private JobBuilderFactory jobBuilderFactory;
 	@Autowired private JobFinishedListener jobFinishedListener;
 	@Autowired private TriggerJobList triggerJobList;
-	@Autowired private Environment env;
+	@Autowired @Qualifier("jobDataSource") private DataSource jobDataSource;
 
 	@Value("${meta.admin-url}") private String adminUrl;
 	@Value("${meta.callback-url}") private String callbackUrl;
@@ -75,19 +76,10 @@ public class Job5Config {
 
 	@Value("${data.limit}") private int dataLimit = 0;
 
-    private DataSource job4DataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("job04.datasource.driver-class-name"));
-        dataSource.setUrl(env.getProperty("job04.datasource.url"));
-        dataSource.setUsername(env.getProperty("job04.datasource.username"));
-        dataSource.setPassword(env.getProperty("job04.datasource.password"));
-        return dataSource;
-    }
-
     private ItemReader<VttCsv> normalReader(String region) {
     	StringBuffer sql = new StringBuffer();
-    	sql.append("SELECT region, media_id, m4a_name, m4a_size, m4v_name, m4v_size, mp4_name, mp4_size ");
-    	sql.append("FROM media_size ");
+    	sql.append("SELECT * ");
+    	sql.append("FROM tb_media_size ");
        	sql.append("WHERE region='" + region + "' ");
        	sql.append(" AND m4a_name IS NOT NULL ");
        	sql.append(" AND m4v_name IS NOT NULL ");
@@ -97,7 +89,7 @@ public class Job5Config {
     	}
     	
     	JdbcCursorItemReader<VttCsv> reader = new JdbcCursorItemReader<VttCsv>();
-        reader.setDataSource(job4DataSource());
+        reader.setDataSource(jobDataSource);
         reader.setRowMapper(new VttCsvRowMapper());
         reader.setSql(sql.toString());
         return reader;
@@ -105,8 +97,8 @@ public class Job5Config {
 
     private ItemReader<VttCsv> abnormalReader(String region) {
     	StringBuffer sql = new StringBuffer();
-    	sql.append("SELECT region, media_id, m4a_name, m4a_size, m4v_name, m4v_size, mp4_name, mp4_size ");
-    	sql.append("FROM media_size ");
+    	sql.append("SELECT * ");
+    	sql.append("FROM tb_media_size ");
        	sql.append("WHERE region='" + region + "' ");
        	sql.append(" AND ( m4a_name IS NULL ");
        	sql.append(" OR m4v_name IS NULL ");
@@ -116,7 +108,7 @@ public class Job5Config {
     	}
     	
     	JdbcCursorItemReader<VttCsv> reader = new JdbcCursorItemReader<VttCsv>();
-        reader.setDataSource(job4DataSource());
+        reader.setDataSource(jobDataSource);
         reader.setRowMapper(new VttCsvRowMapper());
         reader.setSql(sql.toString());
         return reader;

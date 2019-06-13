@@ -1,8 +1,6 @@
 package com.skb.ecdnmigration.job4;
 
 import java.net.MalformedURLException;
-import java.util.regex.Pattern;
-
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -20,31 +18,34 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.RegexLineTokenizer;
+import org.springframework.batch.item.support.PassThroughItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import com.sk.batch.lib.AdminConfig;
 import com.sk.batch.lib.JobFinishedListener;
 import com.sk.batch.lib.TriggerJobInfo;
 import com.sk.batch.lib.TriggerJobList;
+import com.skb.ecdnmigration.job.data.TableContent;
+import com.skb.ecdnmigration.job.data.VttContent;
+import com.skb.ecdnmigration.job.data.VttCsv;
 import com.skb.ecdnmigration.job.data.VttFile;
 import com.skb.ecdnmigration.job.data.VttSize;
+import com.skb.ecdnmigration.job1.Job1Config;
+import com.skb.ecdnmigration.job1.TableRowMapper;
 import com.skb.ecdnmigration.job2.FileToMemoryProcessor;
-import com.skb.ecdnmigration.job2.VttFieldMapper;
+import com.skb.ecdnmigration.job5.VttCsvRowMapper;
 
 
 @Configuration 
-@Import(AdminConfig.class)
+@Import({AdminConfig.class, Job1Config.class})
 public class Job4Config {
 	private Logger logger = LoggerFactory.getLogger(Job4Config.class);
 
@@ -52,7 +53,9 @@ public class Job4Config {
 	@Autowired private JobBuilderFactory jobBuilderFactory;
 	@Autowired private JobFinishedListener jobFinishedListener;
 	@Autowired private TriggerJobList triggerJobList;
-	@Autowired private Environment env;
+	@Autowired @Qualifier("jobDataSource") private DataSource jobDataSource;
+	@Autowired @Qualifier("migDataSource") private DataSource migDataSource;
+	@Autowired @Qualifier("jobJdbcTemplate") private NamedParameterJdbcTemplate jobNamedJdbcTemplate;
 
 	@Value("${meta.admin-url}") private String adminUrl;
 	@Value("${meta.callback-url}") private String callbackUrl;
@@ -66,20 +69,6 @@ public class Job4Config {
 	@Value("${job04.file.dir-gang}") private String dirGang;
 
 	@Value("${data.limit}") private int dataLimit = 0;
-
-    private DataSource job4DataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("job04.datasource.driver-class-name"));
-        dataSource.setUrl(env.getProperty("job04.datasource.url"));
-        dataSource.setUsername(env.getProperty("job04.datasource.username"));
-        dataSource.setPassword(env.getProperty("job04.datasource.password"));
-        return dataSource;
-    }
-
-    private NamedParameterJdbcTemplate job4NamedJdbcTemplate() {
-       	NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(job4DataSource());
-    	return jdbcTemplate;
-    }
 
     private ItemReader<VttFile> stepReader(String fname) {
         FlatFileItemReader<VttFile> reader = new FlatFileItemReader<VttFile>();
@@ -95,7 +84,7 @@ public class Job4Config {
 
     private ItemWriter<VttSize> stepWriter(String key) {
     	StringBuffer sql = new StringBuffer();
-    	sql.append("INSERT INTO media_size (region, media_id, ");
+    	sql.append("INSERT INTO tb_media_size (region, media_id, ");
     	sql.append(" " + key + "_name, " + key + "_size ) ");
     	sql.append(" VALUES (?, ?, ?, ?)");
     	sql.append(" ON DUPLICATE KEY  UPDATE ");
@@ -103,8 +92,8 @@ public class Job4Config {
     	sql.append(" " + key + "_name=?, " + key + "_size=?;");
 
      	JdbcBatchItemWriter<VttSize> writer = new JdbcBatchItemWriter<VttSize>();
-     	writer.setDataSource(job4DataSource());
-  		writer.setJdbcTemplate(job4NamedJdbcTemplate());
+     	writer.setDataSource(jobDataSource);
+  		writer.setJdbcTemplate(jobNamedJdbcTemplate);
      	writer.setSql(sql.toString());
      	writer.setItemPreparedStatementSetter(new VttSizePrepareStatementSetter());
      	return writer;
@@ -164,7 +153,45 @@ public class Job4Config {
        return simpleStepBuilder.build();
    }
 
- 	@Bean @Qualifier("ecdnCheckAllJob")
+    private ItemReader<VttContent> nameReader() {
+    	StringBuffer sql = new StringBuffer();
+    	sql.append("SELECT media_id, cid, package_info ");
+    	sql.append("FROM tb_content ");
+    	if(dataLimit > 0) {
+        	sql.append("LIMIT " + dataLimit + " OFFSET 0");
+    	}
+    	
+    	JdbcCursorItemReader<VttContent> reader = new JdbcCursorItemReader<VttContent>();
+        reader.setDataSource(migDataSource);
+        reader.setRowMapper(new VttContentRowMapper());
+        reader.setSql(sql.toString());
+        return reader;
+    }
+
+    private ItemWriter<VttContent> nameWriter() {
+    	StringBuffer sql = new StringBuffer();
+     	sql.append("UPDATE tb_media_size SET cid=?, content_name=? ");
+    	sql.append(" WHERE media_id=? AND region IN ('dong', 'gang') ");
+
+     	JdbcBatchItemWriter<VttContent> writer = new JdbcBatchItemWriter<VttContent>();
+     	writer.setDataSource(jobDataSource);
+  		writer.setJdbcTemplate(jobNamedJdbcTemplate);
+     	writer.setSql(sql.toString());
+     	writer.setAssertUpdates(false);
+     	writer.setItemPreparedStatementSetter(new VttContentPrepareStatementSetter());
+     	return writer;
+     }
+
+    private Step step30() {
+   	StepBuilder stepBuilder =  stepBuilderFactory.get("SetContentName");
+       SimpleStepBuilder<VttContent, VttContent> simpleStepBuilder = stepBuilder.<VttContent, VttContent>chunk(100);
+       simpleStepBuilder.reader(nameReader());
+       simpleStepBuilder.processor(new PassThroughItemProcessor<VttContent>());
+       simpleStepBuilder.writer(nameWriter());
+       return simpleStepBuilder.build();
+   }
+
+ 	@Bean @Qualifier("ecdnUploadSize")
     public Job job04() {
 
  		JobBuilder jobBuilder = jobBuilderFactory.get(jobName);
@@ -178,8 +205,9 @@ public class Job4Config {
         jobFlowBuilder.next(step21());
         jobFlowBuilder.next(step22());
         jobFlowBuilder.next(step23());
+        jobFlowBuilder.next(step30());
         jobFlowBuilder.end();
-        
+
         FlowJobBuilder flowJobBuilder = jobFlowBuilder.build();
         Job job = flowJobBuilder.build();
 

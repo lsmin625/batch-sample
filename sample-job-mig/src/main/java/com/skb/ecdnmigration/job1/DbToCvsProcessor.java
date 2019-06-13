@@ -20,7 +20,6 @@ import com.skb.ecdnmigration.job.data.JsonMigrationData;
 import com.skb.ecdnmigration.job.data.JsonPackageInfo;
 import com.skb.ecdnmigration.job.data.JsonTrackInfo;
 import com.skb.ecdnmigration.job.data.TableContent;
-import com.skb.ecdnmigration.job.data.TableRowMapper;
 
 public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, FileList> {
 	private Logger logger = LoggerFactory.getLogger(DbToCvsProcessor.class);

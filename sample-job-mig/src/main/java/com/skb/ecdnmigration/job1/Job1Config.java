@@ -28,7 +28,6 @@ import com.sk.batch.lib.JobFinishedListener;
 import com.sk.batch.lib.TriggerJobInfo;
 import com.sk.batch.lib.TriggerJobList;
 import com.skb.ecdnmigration.job.data.TableContent;
-import com.skb.ecdnmigration.job.data.TableRowMapper;
 import com.skb.ecdnmigration.job.data.FileList;
 
 
@@ -56,6 +55,22 @@ public class Job1Config {
 	
 	@Value("${data.limit}") private int dataLimit = 0;
 	    
+    @Bean @Qualifier("migDataSource")
+    public DataSource migDataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(env.getProperty("mig.datasource.driver-class-name"));
+        dataSource.setUrl(env.getProperty("mig.datasource.url"));
+        dataSource.setUsername(env.getProperty("mig.datasource.username"));
+        dataSource.setPassword(env.getProperty("mig.datasource.password"));
+        return dataSource;
+    }
+    
+    @Bean @Qualifier("migJdbcTemplate")
+    public NamedParameterJdbcTemplate migJdbcTemplate(@Qualifier("migDataSource") DataSource dataSource) {
+       	NamedParameterJdbcTemplate jobJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    	return jobJdbcTemplate;
+    }
+
     @Bean @Qualifier("jobDataSource")
     public DataSource jobDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -72,43 +87,42 @@ public class Job1Config {
     	return jobJdbcTemplate;
     }
 
-    private ItemReader<TableContent> step1Reader(DataSource jobDataSource) {
+    private ItemReader<TableContent> step1Reader(DataSource dataSource) {
     	StringBuffer sql = new StringBuffer();
     	sql.append("SELECT tb_content.content_seq, media_id, cid, package_info, meta_info, tb_content.register_date ");
     	sql.append("FROM tb_content, tb_content_meta ");
        	sql.append("WHERE tb_content.status_code = 7 ");
        	sql.append(" AND tb_content.content_seq = tb_content_meta.content_seq ");
        	sql.append(" AND tb_content_meta.file_path = 'stb_info' ");
-        sql.append(" LIMIT 900000 OFFSET 34454");
     	if(dataLimit > 0) {
         	sql.append("LIMIT " + dataLimit + " OFFSET 0");
     	}
     	
     	JdbcCursorItemReader<TableContent> reader = new JdbcCursorItemReader<TableContent>();
-        reader.setDataSource(jobDataSource);
+        reader.setDataSource(dataSource);
         reader.setRowMapper(new TableRowMapper());
         reader.setSql(sql.toString());
         return reader;
     }
  
-    private Step step1(DataSource jobDataSource) {
+    private Step step1(DataSource dataSource) {
     	StepBuilder stepBuilder =  stepBuilderFactory.get("ecdnNcmsStep1");
         SimpleStepBuilder<TableContent, FileList> simpleStepBuilder = stepBuilder.<TableContent, FileList> chunk(100);
-        simpleStepBuilder.reader(step1Reader(jobDataSource));
+        simpleStepBuilder.reader(step1Reader(dataSource));
         simpleStepBuilder.processor(new DbToCvsProcessor<TableContent, FileList>());
         simpleStepBuilder.writer(new MultiFileItemWriter(fCommon, fVideo, fAudio, fCaption));
         return simpleStepBuilder.build();
     }
 
  	@Bean @Qualifier("ecdnNcmsJob")
-    public Job job01(@Qualifier("jobDataSource") DataSource jobDataSource) {
+    public Job job01(@Qualifier("migDataSource") DataSource dataSource) {
 
  		JobBuilder jobBuilder = jobBuilderFactory.get(jobName);
         jobBuilder.incrementer(new RunIdIncrementer());
         jobBuilder.preventRestart();
         jobBuilder.listener(jobFinishedListener);
 
-        JobFlowBuilder jobFlowBuilder = jobBuilder.flow(step1(jobDataSource));
+        JobFlowBuilder jobFlowBuilder = jobBuilder.flow(step1(dataSource));
         jobFlowBuilder.end();
         
         FlowJobBuilder flowJobBuilder = jobFlowBuilder.build();
