@@ -34,9 +34,15 @@ public class MultiFileItemWriter implements ItemWriter<FileList> {
 		FileOutputStream fosVideo = new FileOutputStream(video, true);
 		FileOutputStream fosAudio = new FileOutputStream(audio, true);
 		FileOutputStream fosCaption = new FileOutputStream(caption, true);
+		FileOutputStream fosError = new FileOutputStream(common + ".err", true);
 
 		logger.info(">>>> WRITE BEGIN LIST-COUNT=" + items.size());
 		for(FileList item : items) {
+			if(item.getCommon().getCid() == null || item.getCommon().getCid().equals("")) {
+				fosError.write(item.getCommon().getMdaId().getBytes());
+				continue;
+			}
+			
 			String line = item.getCommon().toString();
 			fosCommon.write(line.getBytes());
 			
@@ -64,6 +70,7 @@ public class MultiFileItemWriter implements ItemWriter<FileList> {
 		fosVideo.close();
 		fosAudio.close();
 		fosCaption.close();
+		fosError.close();
 	}
 	
 	

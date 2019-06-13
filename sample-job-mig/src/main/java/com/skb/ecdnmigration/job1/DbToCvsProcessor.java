@@ -3,6 +3,9 @@ package com.skb.ecdnmigration.job1;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
 import com.skb.ecdnmigration.job.data.FileAudio;
@@ -17,8 +20,10 @@ import com.skb.ecdnmigration.job.data.JsonMigrationData;
 import com.skb.ecdnmigration.job.data.JsonPackageInfo;
 import com.skb.ecdnmigration.job.data.JsonTrackInfo;
 import com.skb.ecdnmigration.job.data.TableContent;
+import com.skb.ecdnmigration.job.data.TableRowMapper;
 
 public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, FileList> {
+	private Logger logger = LoggerFactory.getLogger(DbToCvsProcessor.class);
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	@Override
@@ -27,6 +32,13 @@ public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, Fil
 
 		JsonPackageInfo packInfo = item.getPackageInfo();
 		JsonMigrationData migData = packInfo.getMigration_data();
+		if(migData == null) {
+			logger.info("@@@@ NO MIGDATA] MEDIA-ID=" + item.getMediaId() + ", " + packInfo.toString());
+			FileCommon common = new FileCommon();
+			common.setMdaId(item.getMediaId());
+			list.setCommon(common);
+			return list;
+		}
 		List<JsonTrackInfo> tracksArray = migData.getTrack_info();
 		JsonMetaInfo metaInfo = item.getMetaInfo();
 		JsonMetaVideo metaVideo = metaInfo.getVideo().get(0);

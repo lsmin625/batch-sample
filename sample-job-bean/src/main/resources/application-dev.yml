@@ -1,9 +1,9 @@
 server:
-  port: 9085
+  port: 9111
   
 meta:
   admin-url: http://127.0.0.1:9090/
-  callback-url: http://127.0.0.1:9085/
+  callback-url: http://127.0.0.1:9111/
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://127.0.0.1:3306/jside

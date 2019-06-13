@@ -26,7 +26,7 @@ public class FileCommon {
 		StringBuffer buff = new StringBuffer();
 		buff.append(mdaId);
 		buff.append("," + fileNm);
-		buff.append("," + filePath);
+		buff.append("," + filePath + "/");
 		buff.append("," + allPlayTmsc);
 		buff.append("," + drmTypCd);
 		buff.append("," + drmMthdCd);

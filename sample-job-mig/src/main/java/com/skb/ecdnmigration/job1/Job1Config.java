@@ -76,7 +76,10 @@ public class Job1Config {
     	StringBuffer sql = new StringBuffer();
     	sql.append("SELECT tb_content.content_seq, media_id, cid, package_info, meta_info, tb_content.register_date ");
     	sql.append("FROM tb_content, tb_content_meta ");
-    	sql.append("WHERE tb_content.content_seq = tb_content_meta.content_seq AND tb_content_meta.file_path = 'stb_info' ");
+       	sql.append("WHERE tb_content.status_code = 7 ");
+       	sql.append(" AND tb_content.content_seq = tb_content_meta.content_seq ");
+       	sql.append(" AND tb_content_meta.file_path = 'stb_info' ");
+        sql.append(" LIMIT 900000 OFFSET 34454");
     	if(dataLimit > 0) {
         	sql.append("LIMIT " + dataLimit + " OFFSET 0");
     	}
