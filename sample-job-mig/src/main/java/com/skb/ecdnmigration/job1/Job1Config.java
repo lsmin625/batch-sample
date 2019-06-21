@@ -107,7 +107,7 @@ public class Job1Config {
  
     private Step step1(DataSource dataSource) {
     	StepBuilder stepBuilder =  stepBuilderFactory.get("ecdnNcmsStep1");
-        SimpleStepBuilder<TableContent, FileList> simpleStepBuilder = stepBuilder.<TableContent, FileList> chunk(100);
+        SimpleStepBuilder<TableContent, FileList> simpleStepBuilder = stepBuilder.<TableContent, FileList> chunk(30);
         simpleStepBuilder.reader(step1Reader(dataSource));
         simpleStepBuilder.processor(new DbToCvsProcessor<TableContent, FileList>());
         simpleStepBuilder.writer(new MultiFileItemWriter(fCommon, fVideo, fAudio, fCaption));

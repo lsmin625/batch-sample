@@ -72,12 +72,15 @@ job05:
     dir-output: "D:/data/ecdn-ncms/size-comp/"
 
 job06:
-  name: ECDN_6-WRONG-PATH
-  desc: "To correct wrong path"
+  name: ECDN_6-MIG-MAY2019
+  desc: "To mig content after 2019"
   mode: trigger
   cron: "59 59 23 31 12 ? 2099"
   file:
-    dir-output: "D:/data/ecdn-ncms/wrong-path/"
+    output-common: "D:/data/ecdn-ncms/may2019/ecdn-common.csv"
+    output-video: "D:/data/ecdn-ncms/may2019/ecdn-video.csv"
+    output-audio: "D:/data/ecdn-ncms/may2019/ecdn-audio.csv"
+    output-caption: "D:/data/ecdn-ncms/may2019/ecdn-caption.csv"
 
 data:
   limit: 0

@@ -28,8 +28,8 @@ public class TableRowMapper implements RowMapper<TableContent> {
 			int len = packInfo.length();
 			packInfo = packInfo.substring(1, len-1);
 		}
-		logger.info(">>>>PACK] " + packInfo);
-		logger.info(">>>>META] " + metaInfo);
+//		logger.info(">>>>PACK] " + packInfo);
+//		logger.info(">>>>META] " + metaInfo);
 
 		JsonPackageInfo jsonPackage = null;
 		JsonMetaInfo jsonMeta = null;
@@ -60,7 +60,7 @@ public class TableRowMapper implements RowMapper<TableContent> {
 		data.setMetaInfo(jsonMeta);
 		data.setRegisterDate(rs.getDate("tb_content.register_date"));
 
-		logger.info(">>>>JSON-TABLE] " + data.toString());
+//		logger.info(">>>>JSON-TABLE] " + data.toString());
 		
 		return data;
 	}

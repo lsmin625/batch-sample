@@ -1,5 +1,23 @@
+spring:
+  application:
+    name: sample-job-shell
+
 server:
-  port: 9132
+  port: 0
+
+eureka:
+  client:
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    healthcheck:
+      enabled: true
+  instance:
+    preferIpAddress: true
+    lease-renewal-interval-in-seconds: 30
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}   
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   
 meta:
   admin-url: http://127.0.0.1:9090/

@@ -15,6 +15,7 @@ D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job5\J
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\VttCsv.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job1\DbToCvsProcessor.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job5\CsvFileItemWriter.java
+D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job6\Job6Config.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMetaInfo.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\FileCheck.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMetaSubtitle.java
@@ -24,11 +25,13 @@ D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\C
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job5\VttCsvRowMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMetaAudio.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job3\SingleFileItemWriter.java
+D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job6\ContentToCvsProcessor.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMetaVideo.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\FileList.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\MemoryWriter.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\VttSize.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\BatchJobApplication.java
+D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job6\ContentRowMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMigrationData.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\CaptionFieldMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\FileAudio.java

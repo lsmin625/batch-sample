@@ -15,6 +15,7 @@ import com.skb.ecdnmigration.job.data.FileList;
 import com.skb.ecdnmigration.job.data.FileVideo;
 import com.skb.ecdnmigration.job.data.JsonMetaAudio;
 import com.skb.ecdnmigration.job.data.JsonMetaInfo;
+import com.skb.ecdnmigration.job.data.JsonMetaSubtitle;
 import com.skb.ecdnmigration.job.data.JsonMetaVideo;
 import com.skb.ecdnmigration.job.data.JsonMigrationData;
 import com.skb.ecdnmigration.job.data.JsonPackageInfo;
@@ -42,7 +43,7 @@ public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, Fil
 		JsonMetaInfo metaInfo = item.getMetaInfo();
 		JsonMetaVideo metaVideo = metaInfo.getVideo().get(0);
 		JsonMetaAudio metaAudio = metaInfo.getAudio().get(0);
-//		List<JsonMetaSubtitle> metaSubtitleList = metaInfo.getSubtitle();
+		List<JsonMetaSubtitle> metaSubtitleList = metaInfo.getSubtitle();
 		
 		//to set Common
 		FileCommon common = new FileCommon();
@@ -101,23 +102,37 @@ public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, Fil
 			audio.setMdaSndId("");
 			list.getAudioList().add(audio);
 		}
-		
-		//to set Caption list
-		trackList = getTrackList(tracksArray, "CP");
-		for(JsonTrackInfo track : trackList) {
-//			JsonMetaSubtitle metaSubtitle = getMetaSubtitle(metaSubtitleList, track.getTrack_name());
-			
-			FileCaption caption = new FileCaption();
-			caption.setMdaId(migData.getMedia_id());
-			caption.setCaptLagFgCd(track.getTrack_sub_type());
-			caption.setFileNn(track.getOutput_name() + ".vtt");
-			caption.setFileByteSz("0");	//TBD
-			caption.setRegDate(format.format(item.getRegisterDate()));
-			caption.setOrdSeq("0");
-			caption.setMdaCaptId("");
-			list.getCaptionList().add(caption);
+
+		if(metaSubtitleList != null && metaSubtitleList.size() > 0) {
+			for(JsonMetaSubtitle sub : metaSubtitleList) {
+				FileCaption caption = new FileCaption();
+				caption.setMdaId(migData.getMedia_id());
+				String fname = getFileName(sub.getPath());
+				caption.setCaptLagFgCd(getCaptionCode(fname));
+				caption.setFileNn(fname);
+				caption.setFileByteSz("0");	//TBD
+				caption.setRegDate(format.format(item.getRegisterDate()));
+				caption.setOrdSeq("0");
+				caption.setMdaCaptId("");
+				list.getCaptionList().add(caption);
+			}
 		}
-		
+		else {
+			trackList = getTrackList(tracksArray, "CP");
+			for(JsonTrackInfo track : trackList) {
+				FileCaption caption = new FileCaption();
+				caption.setMdaId(migData.getMedia_id());
+				caption.setCaptLagFgCd(track.getTrack_sub_type());
+				caption.setFileNn(track.getOutput_name() + ".vtt");
+				caption.setFileByteSz("0");	//TBD
+				caption.setRegDate(format.format(item.getRegisterDate()));
+				caption.setOrdSeq("0");
+				caption.setMdaCaptId("");
+				list.getCaptionList().add(caption);
+			}
+		}
+
+		logger.info(">>>> FILE]" + list.toString());
 		return list;
 	}
 	
@@ -134,6 +149,11 @@ public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, Fil
 	private static String getFileName(String path) {
 		int index = path.lastIndexOf('/');
 		return path.substring(index + 1);
+	}
+
+	private static String getCaptionCode(String name) {
+		String cols[] = name.split("_");
+		return cols[2].substring(2);
 	}
 
 	/*
