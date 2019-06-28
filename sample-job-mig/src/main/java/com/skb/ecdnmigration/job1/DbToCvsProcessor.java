@@ -21,6 +21,7 @@ import com.skb.ecdnmigration.job.data.JsonMigrationData;
 import com.skb.ecdnmigration.job.data.JsonPackageInfo;
 import com.skb.ecdnmigration.job.data.JsonTrackInfo;
 import com.skb.ecdnmigration.job.data.TableContent;
+import com.skb.ecdnmigration.job6.NocidList;
 
 public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, FileList> {
 	private Logger logger = LoggerFactory.getLogger(DbToCvsProcessor.class);
@@ -32,8 +33,8 @@ public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, Fil
 
 		JsonPackageInfo packInfo = item.getPackageInfo();
 		JsonMigrationData migData = packInfo.getMigration_data();
-		if(migData == null) {
-			logger.info("@@@@ NO MIGDATA] MEDIA-ID=" + item.getMediaId() + ", " + packInfo.toString());
+		if(migData == null || NocidList.containsKey(item.getCid())) {
+			logger.info("@@@@ NO MIGDATA OR FAILED-CID] MEDIA-ID=" + item.getMediaId() + ", " + packInfo.toString());
 			FileCommon common = new FileCommon();
 			common.setMdaId(item.getMediaId());
 			list.setCommon(common);
@@ -77,7 +78,7 @@ public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, Fil
 			video.setRsluFileNn(getFileName(metaVideo.getPath()));
 			video.setRsluFileByteSz(metaVideo.getFilesize());	//with meta
 			video.setBrtKbCnt(metaVideo.getBitrate());	//with meta
-			video.setRsluCdecTypCd("AVC");
+			video.setRsluCdecTypCd(metaVideo.getCodec());	//with meta
 			video.setScrtLvlCd("3");
 			video.setHdcpVerCd("HDCP_NONE");
 			video.setRegDate(format.format(item.getRegisterDate()));
@@ -94,7 +95,7 @@ public class DbToCvsProcessor<T1, T2> implements ItemProcessor<TableContent, Fil
 			audio.setAdoLagFgCd(track.getTrack_sub_type());
 			audio.setFileNm(getFileName(metaAudio.getPath()));
 			audio.setFileByteSz(metaAudio.getFilesize());	//with meta
-			audio.setAdoCdecTypCd("AAC");
+			audio.setAdoCdecTypCd(metaAudio.getCodec());	//with meta
 			audio.setBrtKbCnt(metaAudio.getBitrate());	//with meta
 			audio.setRegDate(format.format(item.getRegisterDate()));
 			audio.setEncOrdSeq("");

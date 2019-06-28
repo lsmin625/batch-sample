@@ -77,6 +77,7 @@ job06:
   mode: trigger
   cron: "59 59 23 31 12 ? 2099"
   file:
+    nocid-list: "D:/data/ecdn-ncms/may2019/nocid-list.csv"
     output-common: "D:/data/ecdn-ncms/may2019/ecdn-common.csv"
     output-video: "D:/data/ecdn-ncms/may2019/ecdn-video.csv"
     output-audio: "D:/data/ecdn-ncms/may2019/ecdn-audio.csv"

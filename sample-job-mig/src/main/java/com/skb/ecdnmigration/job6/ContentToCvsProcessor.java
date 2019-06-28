@@ -60,8 +60,8 @@ public class ContentToCvsProcessor<T1, T2> implements ItemProcessor<TableContent
 
 		JsonPackageInfo packInfo = item.getPackageInfo();
 		JsonMigrationData migData = packInfo.getMigration_data();
-		if(migData == null) {
-			logger.info("@@@@ NO MIGDATA] MEDIA-ID=" + item.getMediaId() + ", " + packInfo.toString());
+		if(migData == null || NocidList.containsKey(item.getCid())) {
+			logger.info("@@@@ NO MIGDATA OR FAILED-CID] MEDIA-ID=" + item.getMediaId() + ", " + packInfo.toString());
 			FileCommon common = new FileCommon();
 			common.setMdaId(item.getMediaId());
 			list.setCommon(common);

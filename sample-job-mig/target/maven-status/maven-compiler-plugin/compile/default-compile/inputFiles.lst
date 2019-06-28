@@ -24,11 +24,13 @@ D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\da
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\CaptionFileWriter.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job5\VttCsvRowMapper.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMetaAudio.java
+D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job1\NocidList.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job3\SingleFileItemWriter.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job6\ContentToCvsProcessor.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\JsonMetaVideo.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\FileList.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job2\MemoryWriter.java
+D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job6\NocidList.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job\data\VttSize.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\BatchJobApplication.java
 D:\github\batch-sample\sample-job-mig\src\main\java\com\skb\ecdnmigration\job6\ContentRowMapper.java
