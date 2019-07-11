@@ -31,10 +31,10 @@ job01:
   mode: trigger
   cron: "59 59 23 31 12 ? 2099"
   file:
-    output-common: "D:/data/ecdn-ncms/ecdn-common.csv"
-    output-video: "D:/data/ecdn-ncms/ecdn-video.csv"
-    output-audio: "D:/data/ecdn-ncms/ecdn-audio.csv"
-    output-caption: "D:/data/ecdn-ncms/ecdn-caption.csv"
+    output-common: "D:/data/ecdn-ncms/20190710/ecdn-common.csv"
+    output-video: "D:/data/ecdn-ncms/20190710/ecdn-video.csv"
+    output-audio: "D:/data/ecdn-ncms/20190710/ecdn-audio.csv"
+    output-caption: "D:/data/ecdn-ncms/20190710/ecdn-caption.csv"
 
 job02:
   name: ECDN_2-CAPTION-SIZE
@@ -42,9 +42,9 @@ job02:
   mode: trigger
   cron: "59 59 23 31 12 ? 2099"
   file:
-    input-vttlist: "D:/data/ecdn-ncms/caption/vtt-list.csv"
-    input-caption: "D:/data/ecdn-ncms/caption/ecdn-caption.csv"
-    output-caption: "D:/data/ecdn-ncms/caption/ecdn-caption"
+    input-vttlist: "D:/data/ecdn-ncms/20190710/caption/vtt-list.csv"
+    input-caption: "D:/data/ecdn-ncms/20190710/caption/ecdn-caption.csv"
+    output-caption: "D:/data/ecdn-ncms/20190710/caption/ecdn-caption"
 
 job03:
   name: ECDN_3-MIG-CHECK

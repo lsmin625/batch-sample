@@ -21,7 +21,7 @@ eureka:
   
 meta:
   admin-url: http://127.0.0.1:9090/
-  callback-url: http://127.0.0.1:9132/
+  host-address: 127.0.0.1
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://127.0.0.1:3306/jside

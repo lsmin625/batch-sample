@@ -94,6 +94,7 @@ public class Job1Config {
        	sql.append("WHERE tb_content.status_code = 7 ");
        	sql.append(" AND tb_content.content_seq = tb_content_meta.content_seq ");
        	sql.append(" AND tb_content_meta.file_path = 'stb_info' ");
+//       	sql.append(" AND tb_content_meta.modify_date >= '2019-07-08 00:00:00' ");
     	if(dataLimit > 0) {
         	sql.append("LIMIT " + dataLimit + " OFFSET 0");
     	}
@@ -107,7 +108,7 @@ public class Job1Config {
  
     private Step step1(DataSource dataSource) {
     	StepBuilder stepBuilder =  stepBuilderFactory.get("ecdnNcmsStep1");
-        SimpleStepBuilder<TableContent, FileList> simpleStepBuilder = stepBuilder.<TableContent, FileList> chunk(30);
+        SimpleStepBuilder<TableContent, FileList> simpleStepBuilder = stepBuilder.<TableContent, FileList> chunk(50);
         simpleStepBuilder.reader(step1Reader(dataSource));
         simpleStepBuilder.processor(new DbToCvsProcessor<TableContent, FileList>());
         simpleStepBuilder.writer(new MultiFileItemWriter(fCommon, fVideo, fAudio, fCaption));

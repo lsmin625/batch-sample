@@ -28,6 +28,7 @@ public class TableRowMapper implements RowMapper<TableContent> {
 			int len = packInfo.length();
 			packInfo = packInfo.substring(1, len-1);
 		}
+		metaInfo.replaceAll("\"", "");
 //		logger.info(">>>>PACK] " + packInfo);
 //		logger.info(">>>>META] " + metaInfo);
 
