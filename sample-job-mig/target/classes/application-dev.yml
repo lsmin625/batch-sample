@@ -81,5 +81,36 @@ job06:
     output-audio: "D:/data/ecdn-ncms/may2019/ecdn-audio.csv"
     output-caption: "D:/data/ecdn-ncms/may2019/ecdn-caption.csv"
 
+job07:
+  name: ECDN_7-EXPORT-CAPTION
+  desc: "To export subtitle info"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  file:
+    output-list: "D:/data/ecdn-ncms/20191004/list.csv"
+
+job08:
+  name: ECDN_8-TO-LOGSTASH
+  desc: "To export database to elasticsearch"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  output:
+    logstash: "http://172.20.1.190:8888/"
+
+job09:
+  name: ECDN_9-TO-CSV
+  desc: "To export database to csv"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  output:
+    csv: "D:/data/ecdn-ncms/20191114/list.csv"
+jobA:
+  name: ECDN_A-TO-CSV
+  desc: "To export all database to csv"
+  mode: trigger
+  cron: "59 59 23 31 12 ? 2099"
+  output:
+    csv: "D:/data/ecdn-ncms/20191120/list.csv"
+
 data:
   limit: 0

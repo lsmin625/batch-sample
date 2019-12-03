@@ -11,4 +11,7 @@ public class TableContent {
 	private JsonPackageInfo packageInfo;
 	private JsonMetaInfo metaInfo;
 	private Date registerDate;
+	private int statusCode;
+	private String status;
+	private String resultMessage;
 }
