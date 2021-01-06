@@ -57,15 +57,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-		</dependency>
-
        <!-- User Added dependencies -->
         <dependency>
             <groupId>org.xerial</groupId>
@@ -89,7 +80,7 @@
 		<dependency>
 			<groupId>com.sk.batch</groupId>
 			<artifactId>batch-lib</artifactId>
-			<version>2.0.0</version>
+			<version>1.1.0</version>
 		</dependency>
 
 	</dependencies>

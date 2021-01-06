@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: lsmin
+Build-Jdk: 11.0.3
+Implementation-Title: ecdn-migration
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.skb
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/ecdn-migration
+Created-By: Maven Integration for Eclipse
+

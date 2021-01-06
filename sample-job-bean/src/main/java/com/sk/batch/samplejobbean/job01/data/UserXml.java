@@ -1,13 +1,9 @@
 package com.sk.batch.samplejobbean.job01.data;
 
 import java.util.Date;
+import lombok.Data;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Getter;
-import lombok.Setter;
-
-@Setter @Getter @XmlRootElement(name = "user")
+@Data
 public class UserXml {
     private String userName;
     private int userId;
