@@ -53,7 +53,13 @@ public class Job02Config {
 
  	@Bean @Qualifier("job02")
     public Job job02() {
- 		JobBuilder jobBuilder = jobBuilderFactory.get(jobName);
+        TriggerJobInfo jobInfo = new TriggerJobInfo(jobName, callbackUrl);
+        jobInfo.setDesc(jobDesc);
+        jobInfo.setMode(jobMode);
+        jobInfo.setCron(jobCron);
+        jobInfo.setAdminUrl(adminUrl);
+
+        JobBuilder jobBuilder = jobBuilderFactory.get(jobInfo.getName());
         jobBuilder.incrementer(new RunIdIncrementer());
         jobBuilder.preventRestart();
         jobBuilder.listener(jobFinishedListener);
@@ -64,13 +70,6 @@ public class Job02Config {
         FlowJobBuilder flowJobBuilder = jobFlowBuilder.build();
         Job job = flowJobBuilder.build();
 
-        TriggerJobInfo jobInfo = new TriggerJobInfo();
-        jobInfo.setName(job.getName());
-        jobInfo.setDesc(jobDesc);
-        jobInfo.setMode(jobMode);
-        jobInfo.setCron(jobCron);
-        jobInfo.setAdminUrl(adminUrl);
-        jobInfo.setCallbackUrl(callbackUrl);
         jobInfo.setJob(job);
         triggerJobList.add(jobInfo);
         
