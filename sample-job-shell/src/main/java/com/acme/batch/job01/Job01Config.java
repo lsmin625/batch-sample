@@ -19,12 +19,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.sk.batch.lib.AdminConfig;
-import com.sk.batch.lib.JobFinishedListener;
-import com.sk.batch.lib.ShellItemProcessor;
-import com.sk.batch.lib.ShellItemReader;
-import com.sk.batch.lib.ShellItemWriter;
-import com.sk.batch.lib.TriggerJobInfo;
-import com.sk.batch.lib.TriggerJobList;
+import com.sk.batch.lib.data.JobInfo;
+import com.sk.batch.lib.data.JobInfoList;
+import com.sk.batch.lib.service.JobFinishedListener;
+import com.sk.batch.lib.service.ShellItemProcessor;
+import com.sk.batch.lib.service.ShellItemReader;
+import com.sk.batch.lib.service.ShellItemWriter;
 
 
 @Configuration 
@@ -33,7 +33,7 @@ public class Job01Config {
 	@Autowired private StepBuilderFactory stepBuilderFactory;
 	@Autowired private JobBuilderFactory jobBuilderFactory;
 	@Autowired private JobFinishedListener jobFinishedListener;
-	@Autowired private TriggerJobList triggerJobList;
+	@Autowired private JobInfoList jobInfoList;
 
 	@Value("${meta.admin-url}") private String adminUrl;
 	@Value("${meta.callback-url}") private String callbackUrl;
@@ -47,7 +47,7 @@ public class Job01Config {
 
  	@Bean @Qualifier("job01")
     public Job job01() {
-        TriggerJobInfo jobInfo = new TriggerJobInfo(jobName, callbackUrl);
+        JobInfo jobInfo = new JobInfo(jobName, callbackUrl);
         jobInfo.setDesc(jobDesc);
         jobInfo.setMode(jobMode);
         jobInfo.setCron(jobCron);
@@ -64,7 +64,7 @@ public class Job01Config {
         Job job = flowJobBuilder.build();
 
         jobInfo.setJob(job);
-        triggerJobList.add(jobInfo);
+        jobInfoList.add(jobInfo);
         
         return job;
     }
@@ -73,7 +73,7 @@ public class Job01Config {
  		StepBuilder stepBuilder =  stepBuilderFactory.get(jobName + "-step1");
         SimpleStepBuilder<String, String> simpleStepBuilder = stepBuilder.<String, String> chunk(1);
         simpleStepBuilder.reader(new ShellItemReader(script));
-        simpleStepBuilder.processor(new ShellItemProcessor());
+        simpleStepBuilder.processor(new ShellItemProcessor("euc-kr"));
         simpleStepBuilder.writer(new ShellItemWriter());
 
         return simpleStepBuilder.build();

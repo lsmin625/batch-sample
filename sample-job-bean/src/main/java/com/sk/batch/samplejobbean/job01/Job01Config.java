@@ -40,10 +40,10 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import com.sk.batch.lib.AdminConfig;
-import com.sk.batch.lib.AdminRegister;
-import com.sk.batch.lib.JobFinishedListener;
-import com.sk.batch.lib.TriggerJobInfo;
-import com.sk.batch.lib.TriggerJobList;
+import com.sk.batch.lib.controller.AdminRegister;
+import com.sk.batch.lib.data.TriggerJobInfo;
+import com.sk.batch.lib.data.TriggerJobList;
+import com.sk.batch.lib.service.JobFinishedListener;
 import com.sk.batch.samplejobbean.job01.data.User;
 import com.sk.batch.samplejobbean.job01.data.UserXml;
 import com.sk.batch.samplejobbean.job01.step1.CsvToXmlProcessor;
@@ -213,13 +213,11 @@ public class Job01Config {
         FlowJobBuilder flowJobBuilder = jobFlowBuilder.build();
         Job job = flowJobBuilder.build();
 
-        TriggerJobInfo jobInfo = new TriggerJobInfo();
-        jobInfo.setName(job.getName());
+        TriggerJobInfo jobInfo = new TriggerJobInfo(job.getName(), callbackUrl);
         jobInfo.setDesc(jobDesc);
         jobInfo.setMode(jobMode);
         jobInfo.setCron(jobCron);
         jobInfo.setAdminUrl(adminUrl);
-        jobInfo.setCallbackUrl(callbackUrl);
         jobInfo.setJob(job);
         triggerJobList.add(jobInfo);
         return job;

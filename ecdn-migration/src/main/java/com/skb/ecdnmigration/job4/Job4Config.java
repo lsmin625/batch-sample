@@ -30,9 +30,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import com.sk.batch.lib.AdminConfig;
-import com.sk.batch.lib.JobFinishedListener;
-import com.sk.batch.lib.TriggerJobInfo;
-import com.sk.batch.lib.TriggerJobList;
+import com.sk.batch.lib.data.TriggerJobInfo;
+import com.sk.batch.lib.data.TriggerJobList;
+import com.sk.batch.lib.service.JobFinishedListener;
 import com.skb.ecdnmigration.job.data.TableContent;
 import com.skb.ecdnmigration.job.data.VttContent;
 import com.skb.ecdnmigration.job.data.VttCsv;
@@ -211,13 +211,11 @@ public class Job4Config {
         FlowJobBuilder flowJobBuilder = jobFlowBuilder.build();
         Job job = flowJobBuilder.build();
 
-        TriggerJobInfo jobInfo = new TriggerJobInfo();
-        jobInfo.setName(job.getName());
+        TriggerJobInfo jobInfo = new TriggerJobInfo(job.getName(), callbackUrl);
         jobInfo.setDesc(jobDesc);
         jobInfo.setMode(jobMode);
         jobInfo.setCron(jobCron);
         jobInfo.setAdminUrl(adminUrl);
-        jobInfo.setCallbackUrl(callbackUrl);
         jobInfo.setJob(job);
         triggerJobList.add(jobInfo);
         
