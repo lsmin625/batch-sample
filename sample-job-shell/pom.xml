@@ -20,12 +20,11 @@
 	</properties>
 
 	<repositories>
-	  <repository>
-	    <id>local-repo</id>
-	    <name>Local Repository</name>
-<!-- 	<url>file://${project.basedir}/lib</url> -->
-	    <url>file://D:\github\batch-lib\target</url>
-	  </repository>
+		<repository>
+			<id>local-library</id>
+			<name>library for applications</name>
+			<url>file://D:/github/library</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
